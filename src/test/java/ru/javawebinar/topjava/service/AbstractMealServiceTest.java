@@ -1,9 +1,11 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import org.springframework.core.env.Environment;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
@@ -19,6 +21,8 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
     @Autowired
     protected MealService service;
 
+    @Autowired
+    private Environment environment;
     @Test
     public void delete() throws Exception {
         service.delete(MEAL1_ID, USER_ID);
@@ -78,9 +82,18 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Test
     public void testValidation() throws Exception {
+        Assume.assumeFalse(isJdbcActive());
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001), USER_ID), ConstraintViolationException.class);
+    }
+
+    private boolean isJdbcActive() {
+        for (String profile : environment.getActiveProfiles()) {
+            if (profile.equalsIgnoreCase("jdbc"))
+                return true;
+        }
+        return false;
     }
 }

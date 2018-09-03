@@ -40,6 +40,7 @@
               p:url="${database.url}"
               p:username="${database.username}"
               p:password="${database.password}"/>
+
     </beans>
 
     <beans profile="tomcat">
@@ -56,9 +57,14 @@
         <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
             <constructor-arg ref="dataSource"/>
         </bean>
+
+        <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="dataSource"/>
+        </bean>
     </beans>
 
     <beans profile="jpa,datajpa">
+        <import resource="spring-tools.xml"/>
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="ru.javawebinar.**.model">
@@ -102,6 +108,7 @@
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
         <bean class="ru.javawebinar.topjava.repository.JpaUtil"/>
+
     </beans>
 
     <beans profile="jpa">
