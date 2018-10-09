@@ -3,8 +3,6 @@ package ru.javawebinar.topjava.web.meal;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.bind.annotation.RequestBody;
-import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -17,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.TestUtil.contentJson;
 import static ru.javawebinar.topjava.UserTestData.USER;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
@@ -46,10 +43,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void testUpdate() throws Exception {
 
-        Meal updated = new Meal();
-        updated.setUser(USER);
-        updated.setCalories(MEAL1.getCalories());
-        updated.setDateTime(MEAL1.getDateTime());
+
+        Meal updated = MEAL1;
         updated.setDescription("Updated meal");
 
         mockMvc.perform(put(REST_URL + MEAL1_ID)
@@ -82,7 +77,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
         TestUtil.print(mockMvc.perform(get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(MealsUtil.getWithExceeded(MEALS, USER.getCaloriesPerDay())));
+                .andExpect(contentJson(MealsUtil.getWithExceeded(MEALS, USER.getCaloriesPerDay()))));
     }
 
 }
