@@ -4,9 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.to.MealWithExceed;
-import ru.javawebinar.topjava.web.user.AbstractUserController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +12,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ajax/profile/users")
+@RequestMapping("/ajax/profile/meals")
 public class MealAjaxController extends AbstractMealController {
 
     @Override
@@ -41,7 +39,7 @@ public class MealAjaxController extends AbstractMealController {
         }
     }
 
-    @PostMapping("/filter")
+    @GetMapping("/filter")
     public List<MealWithExceed> filter(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime)
     {
         return super.getBetween(startDate, startTime, endDate, endTime);

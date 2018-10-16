@@ -1,5 +1,16 @@
-var ajaxUrl = "ajax/profile/meals/";
+var ajaxUrl = "ajax/meals/";
 var datatableApi;
+
+function filter(){
+    $.ajax({
+        type: "GET",
+        url: ajaxUrl+"filter",
+        data: $("#filterForm").serialize(),
+        success: function (data) {
+            datatableApi.clear().rows.add(data).draw();
+        }
+    })
+}
 
 // $(document).ready(function () {
 $(function () {
