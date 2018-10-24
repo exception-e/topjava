@@ -22,7 +22,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-mvc.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db.xml",
+        "classpath:spring/spring-tools.xml"
 })
 //@WebAppConfiguration
 //@ExtendWith(SpringExtension.class)

@@ -1,6 +1,6 @@
 package ru.javawebinar.topjava.web.meal;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,13 +12,18 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/ajax/profile/meals")
 public class MealAjaxController extends AbstractMealController {
+
+    @Override
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Meal get(@PathVariable("id") int id) {
+        return super.get(id);
+    }
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,9 +42,10 @@ public class MealAjaxController extends AbstractMealController {
         if (mealTo.isNew()) {
             MealsUtil.createNewFromTo(mealTo);
         }
-        else MealsUtil.updateFromTo(mealTo);
-
-        return null;
+        else {
+            MealsUtil.updateFromTo(mealTo);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
