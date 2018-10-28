@@ -42,13 +42,13 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testGetUnauth() throws Exception {
+    void testGetUnauth() throws Exception {
         mockMvc.perform(get(REST_URL + MEAL1_ID))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void testGetNotFound() throws Exception {
+    void testGetNotFound() throws Exception {
         mockMvc.perform(get(REST_URL + ADMIN_MEAL_ID)
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isUnprocessableEntity());
@@ -69,7 +69,7 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testDeleteNotFound() throws Exception {
+    void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL + ADMIN_MEAL_ID)
                 .with(userHttpBasic(USER)))
                 .andDo(print())
@@ -84,7 +84,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated))
                 .with(userHttpBasic(USER)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         assertMatch(service.get(MEAL1_ID, START_SEQ), updated);
     }
@@ -114,7 +114,8 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(contentJson(MealsUtil.getWithExceeded(MEALS, USER.getCaloriesPerDay())));
     }
 
-    public void testFilter() throws Exception {
+    @Test
+    void testFilter() throws Exception {
         mockMvc.perform(get(REST_URL + "filter")
                 .param("startDate", "2015-05-30").param("startTime", "07:00")
                 .param("endDate", "2015-05-31").param("endTime", "11:00")
@@ -127,7 +128,7 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testFilterAll() throws Exception {
+    void testFilterAll() throws Exception {
         mockMvc.perform(get(REST_URL + "filter?startDate=&endTime=")
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
